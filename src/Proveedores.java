@@ -71,7 +71,7 @@ public class Proveedores {
     private static void loadProveedoresFromSQLite(DefaultTableModel tableModel) {
         tableModel.setRowCount(0); // Limpia el modelo antes de cargar nuevos datos
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
 
             String query = "SELECT nombreProveedor, firmaProveedor, localidadProveedor, contactoProveedor, compraMinimaProveedor FROM proveedores";
             Statement statement = connection.createStatement();
@@ -99,7 +99,7 @@ public class Proveedores {
         DefaultTableModel tableModel = (DefaultTableModel) proveedoresTable.getModel();
         tableModel.setRowCount(0); // Limpia las filas actuales
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreProveedor, firmaProveedor, localidadProveedor, contactoProveedor, compraMinimaProveedor FROM proveedores";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -240,7 +240,7 @@ public class Proveedores {
 
         String query = "INSERT INTO proveedores (nombreProveedor, firmaProveedor, localidadProveedor, contactoProveedor, compraMinimaProveedor) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection connection = DriverManager.getConnection(App.url);
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // Asignación de valores a los placeholders
@@ -263,7 +263,7 @@ public class Proveedores {
 
     private static void filtrarProveedor(String busqueda, DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             System.out.println("Buscando: " + busqueda);
 
             tableModel.setRowCount(0); // Limpiar la tabla antes de agregar nuevas filas

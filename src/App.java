@@ -3,16 +3,17 @@ import java.awt.*;
 
 public class App {
 
-    static String rolIngresado = "";
+    static String url = "jdbc:mysql://127.0.0.1:3306/arcadb";
 
-    static String url = "jdbc:sqlite:C:/Users/Usuario/Arca Home/Arcadb.db"; // Ruta al archivo de la base de datos
+    static String usuario = "santi";
+
+    static String contrasena = "";
 
     static Image logo = Toolkit.getDefaultToolkit().getImage(App.class.getResource("/logo arca.png"));
 
     static JTable listTable;
 
     public static void main(String[] args) {
-
         Inicio.mostrarLogin();
     }
 }

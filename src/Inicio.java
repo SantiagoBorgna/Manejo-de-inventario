@@ -59,10 +59,10 @@ public class Inicio {
         layout.putConstraint(SpringLayout.NORTH, btnLogin, 180, SpringLayout.NORTH, container);
 
         btnLogin.addActionListener(e -> {
-            String usuario = txtUsuario.getText();
+            String user = txtUsuario.getText();
             String password = new String(txtPass.getPassword());
 
-            rol = autenticarUsuario(usuario, password);
+            rol = autenticarUsuario(user, password);
             if (rol != null) {
                 loginFrame.dispose();
                 iniciarAplicacionSegunRol(rol);
@@ -75,13 +75,13 @@ public class Inicio {
         loginFrame.setVisible(true);
     }
 
-    private static String autenticarUsuario(String usuario, String password) {
+    private static String autenticarUsuario(String user, String password) {
         String rol = null;
 
-        try (Connection conn = DriverManager.getConnection(App.url)) {
+        try (Connection conn = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT rolUsuario FROM usuarios WHERE nombreUsuario = ? AND passUsuario = ?";
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, usuario);
+            statement.setString(1, user);
             statement.setString(2, password);
 
             ResultSet resultSet = statement.executeQuery();
@@ -97,7 +97,7 @@ public class Inicio {
     private static void iniciarAplicacionSegunRol(String rol) {
         switch (rol) {
             case "superadmin": //victoria
-                InterfazPrincipal.abrirInterfazPrincipal(); // Acceso total
+                InterfazPrincipal.abrirInterfazPrincipal();
                 break;
             case "admin": //admin oliva
                 InterfazPrincipal.abrirInterfazPrincipal2();

@@ -24,7 +24,7 @@ public class Articulos {
     public static void loadDataFromSQLite(DefaultTableModel tableModel) {
         tableModel.setRowCount(0); // Limpia el modelo antes de cargar nuevos datos
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             System.out.println("Conexión exitosa a SQLite.");
 
             String query = "SELECT nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, cant3Articulo, precioCompraArticulo, precioVentaArticulo FROM articulos";
@@ -55,7 +55,7 @@ public class Articulos {
     public static void loadDataFromSQLite2(DefaultTableModel tableModel) {
         tableModel.setRowCount(0); // Limpia el modelo antes de cargar nuevos datos
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             System.out.println("Conexión exitosa a SQLite.");
 
             String query = "SELECT nombreArticulo, descripcionArticulo, cant2Articulo, precioCompraArticulo, precioVentaArticulo FROM articulos";
@@ -83,7 +83,7 @@ public class Articulos {
     public static void loadDataFromSQLite3(DefaultTableModel tableModel) {
         tableModel.setRowCount(0); // Limpia el modelo antes de cargar nuevos datos
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             System.out.println("Conexión exitosa a SQLite.");
 
             String query = "SELECT nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, precioVentaArticulo FROM articulos";
@@ -111,7 +111,7 @@ public class Articulos {
     public static void loadDataFromSQLite4(DefaultTableModel tableModel) {
         tableModel.setRowCount(0); // Limpia el modelo antes de cargar nuevos datos
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             System.out.println("Conexión exitosa a SQLite.");
 
             String query = "SELECT nombreArticulo, descripcionArticulo, cant3Articulo, precioVentaArticulo FROM articulos";
@@ -138,7 +138,7 @@ public class Articulos {
         DefaultTableModel tableModel = (DefaultTableModel) App.listTable.getModel();
         tableModel.setRowCount(0); // Limpia las filas actuales
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, cant3Articulo, precioCompraArticulo, precioVentaArticulo FROM articulos";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -167,7 +167,7 @@ public class Articulos {
         DefaultTableModel tableModel = (DefaultTableModel) App.listTable.getModel();
         tableModel.setRowCount(0); // Limpia las filas actuales
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreArticulo, descripcionArticulo, cant2Articulo, precioCompraArticulo, precioVentaArticulo FROM articulos";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -193,7 +193,7 @@ public class Articulos {
         DefaultTableModel tableModel = (DefaultTableModel) App.listTable.getModel();
         tableModel.setRowCount(0); // Limpia las filas actuales
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, precioVentaArticulo FROM articulos";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -219,7 +219,7 @@ public class Articulos {
         DefaultTableModel tableModel = (DefaultTableModel) App.listTable.getModel();
         tableModel.setRowCount(0); // Limpia las filas actuales
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreArticulo, descripcionArticulo, cant3Articulo, precioVentaArticulo FROM articulos";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -241,7 +241,7 @@ public class Articulos {
 
     public static void filtrarArticulos(String busqueda, DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
 
             tableModel.setRowCount(0); // Limpiar la tabla antes de agregar nuevas filas
 
@@ -276,7 +276,7 @@ public class Articulos {
 
     public static void filtrarArticulos2(String busqueda, DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
 
             tableModel.setRowCount(0); // Limpiar la tabla antes de agregar nuevas filas
 
@@ -308,7 +308,7 @@ public class Articulos {
 
     public static void filtrarArticulos3(String busqueda, DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
 
             tableModel.setRowCount(0); // Limpiar la tabla antes de agregar nuevas filas
 
@@ -340,7 +340,7 @@ public class Articulos {
 
     public static void filtrarArticulos4(String busqueda, DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
 
             tableModel.setRowCount(0); // Limpiar la tabla antes de agregar nuevas filas
 
@@ -1111,7 +1111,7 @@ public class Articulos {
         JFrame formulario = new JFrame("Nuevo Artículo");
         formulario.setIconImage(App.logo);
         formulario.setLocation(220, 50);
-        formulario.setSize(1100, 690);
+        formulario.setSize(1100, 710);
         formulario.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         formulario.setLayout(new BorderLayout());
         formulario.setResizable(false);
@@ -1338,7 +1338,7 @@ public class Articulos {
 
         String query = "INSERT INTO articulos (nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, cant3Articulo, precioCompraArticulo, precioVentaArticulo, proveedorArticulo, imagen1, imagen2, imagen3, imagen4) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DriverManager.getConnection(App.url);
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // Asignación de valores a los placeholders
@@ -1372,7 +1372,7 @@ public class Articulos {
 
         String query = "INSERT INTO articulos (nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, cant3Articulo, precioCompraArticulo, precioVentaArticulo, proveedorArticulo, imagen1, imagen2, imagen3, imagen4) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DriverManager.getConnection(App.url);
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // Asignación de valores a los placeholders
@@ -1406,7 +1406,7 @@ public class Articulos {
 
         String query = "INSERT INTO articulos (nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, cant3Articulo, precioCompraArticulo, precioVentaArticulo, proveedorArticulo, imagen1, imagen2, imagen3, imagen4) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DriverManager.getConnection(App.url);
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // Asignación de valores a los placeholders
@@ -1551,7 +1551,7 @@ public class Articulos {
                     query = "UPDATE articulos SET " + columna + " = " + columna + " + ? WHERE nombreArticulo = ?";
                 }
 
-                try (Connection connection = DriverManager.getConnection(App.url);
+                try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
                      PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
                     preparedStatement.setInt(1, cantidadReponer);
@@ -1697,7 +1697,7 @@ public class Articulos {
                     query = "UPDATE articulos SET " + columna + " = " + columna + " + ? WHERE nombreArticulo = ?";
                 }
 
-                try (Connection connection = DriverManager.getConnection(App.url);
+                try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
                      PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
                     preparedStatement.setInt(1, cantidadReponer);
@@ -1843,7 +1843,7 @@ public class Articulos {
                     query = "UPDATE articulos SET " + columna + " = " + columna + " + ? WHERE nombreArticulo = ?";
                 }
 
-                try (Connection connection = DriverManager.getConnection(App.url);
+                try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
                      PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
                     preparedStatement.setInt(1, cantidadReponer);
@@ -1964,7 +1964,7 @@ public class Articulos {
                     query = "UPDATE articulos SET " + columna + " = " + columna + " + ? WHERE nombreArticulo = ?";
                 }
 
-                try (Connection connection = DriverManager.getConnection(App.url);
+                try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
                      PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
                     preparedStatement.setInt(1, cantidadReponer);
@@ -2050,7 +2050,7 @@ public class Articulos {
         layout.putConstraint(SpringLayout.NORTH, btnConfirmar, 180, SpringLayout.NORTH, container);
 
         btnConfirmar.addActionListener(e -> {
-            try (Connection connection = DriverManager.getConnection(App.url)){
+            try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)){
                 String nombre = txtNombre.getText();
                 int id = 0;
 
@@ -2292,7 +2292,7 @@ public class Articulos {
     private static void actualizarArticulo(int idArticulo, String nombre, String descripcion, int cant1, int cant2,
                                            int cant3, double precioCompra, double precioVenta, String proveedor) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             StringBuilder query = new StringBuilder("UPDATE articulos SET ");
             java.util.List<String> updates = new ArrayList<>();
             List<Object> valores = new ArrayList<>();
@@ -2377,7 +2377,7 @@ public class Articulos {
         String rutaImagen = null;
         String query = "SELECT imagen1 FROM articulos WHERE idArticulo = ?";
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, idArticulo);
             ResultSet resultSet = statement.executeQuery();
@@ -2421,10 +2421,10 @@ public class Articulos {
                             "Cantidad El rincon: " + cant3 + "\n\n" +
                             "Cantidad total: " + total;
 
-            String detalles3 = "\n" +
-                    "Precio de compra: $" + precioCompra + "\n\n" +
+            String detalles3 = "Precio de compra: $" + precioCompra + "\n\n" +
                     "Precio de venta: $" + precioVenta + "\n\n" +
-                    "Precio total: $" + precioVenta*total;
+                    "Precio total: $" + precioVenta*total + "\n\n" +
+                    "Ganancia: $" + (precioVenta - precioCompra);
 
             detalleArticulo1.setText(detalles1);
             detalleArticulo2.setText(detalles2);
@@ -2690,7 +2690,7 @@ public class Articulos {
 
     private static void actualizarTablaDesdeDB(DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, cant3Articulo, precioCompraArticulo, precioVentaArticulo FROM articulos";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -2718,7 +2718,7 @@ public class Articulos {
 
     private static void actualizarTablaDesdeDB2(DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreArticulo, descripcionArticulo, cant2Articulo, precioCompraArticulo, precioVentaArticulo FROM articulos";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -2743,7 +2743,7 @@ public class Articulos {
 
     private static void actualizarTablaDesdeDB3(DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreArticulo, descripcionArticulo, cant1Articulo, cant2Articulo, precioVentaArticulo FROM articulos";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -2770,7 +2770,7 @@ public class Articulos {
 
     private static void actualizarTablaDesdeDB4(DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             String query = "SELECT nombreArticulo, descripcionArticulo, cant3Articulo, precioVentaArticulo FROM articulos";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class LibroDiario {
 
-    private static SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
 
     private static String fechaActual;
 
@@ -105,7 +105,7 @@ public class LibroDiario {
 
         fechaActual = formatoFecha.format(new Date());
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             tableModel.setRowCount(0); // Limpiar la tabla antes de cargar datos
 
             String query = "SELECT clienteVenta, articulosVenta, montoVenta, medioDePagoVenta FROM libro_diario WHERE sucursalVenta = ? AND fechaVenta = ?";
@@ -160,7 +160,7 @@ public class LibroDiario {
         query.append(" AND sucursalVenta = ?");
         parametros.add(sucursal);
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             PreparedStatement statement = connection.prepareStatement(query.toString());
 
             // Asignar parámetros a la consulta

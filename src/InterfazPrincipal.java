@@ -88,7 +88,7 @@ public class InterfazPrincipal {
 
         // Panel para lista de elementos
         JPanel listPanel = new JPanel();
-        listPanel.setPreferredSize(new Dimension(500, 500));
+        listPanel.setPreferredSize(new Dimension(500, 595));
         listPanel.setLayout(new BorderLayout());
 
         String[] listColumns = {"Nombre", "Descripción", "Cantidad Oncativo", "Cantidad Oliva", "Cantidad El rincon", "Total", "Precio de compra", "Precio de venta", "Ganancia"};
@@ -233,7 +233,7 @@ public class InterfazPrincipal {
 
         // Panel para lista de elementos
         JPanel listPanel = new JPanel();
-        listPanel.setPreferredSize(new Dimension(500, 500));
+        listPanel.setPreferredSize(new Dimension(500, 595));
         listPanel.setLayout(new BorderLayout());
 
         String[] listColumns = {"Nombre", "Descripción", "Cantidad en stock", "Precio de compra", "Precio de venta", "Ganancia"};
@@ -374,7 +374,7 @@ public class InterfazPrincipal {
 
         // Panel para lista de elementos
         JPanel listPanel = new JPanel();
-        listPanel.setPreferredSize(new Dimension(500, 500));
+        listPanel.setPreferredSize(new Dimension(500, 595));
         listPanel.setLayout(new BorderLayout());
 
         String[] listColumns = {"Nombre", "Descripción", "Cantidad Oncativo", "Cantidad Oliva", "Total", "Precio de venta"};
@@ -514,7 +514,7 @@ public class InterfazPrincipal {
 
         // Panel para lista de elementos
         JPanel listPanel = new JPanel();
-        listPanel.setPreferredSize(new Dimension(500, 500));
+        listPanel.setPreferredSize(new Dimension(500, 595));
         listPanel.setLayout(new BorderLayout());
 
         String[] listColumns = {"Nombre", "Descripción", "Cantidad", "Precio de venta"};

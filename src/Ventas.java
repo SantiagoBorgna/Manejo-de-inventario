@@ -212,7 +212,7 @@ public class Ventas {
 
     private static void buscarArticulo(String busqueda, DefaultTableModel tableModel) {
 
-        try (Connection connection = DriverManager.getConnection(App.url)){
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)){
             String query;
 
             if (InterfazPrincipal.sucursalActual == "Oncativo"){
@@ -306,7 +306,7 @@ public class Ventas {
 
         String query;
 
-        try (Connection connection = DriverManager.getConnection(App.url)) {
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
             connection.setAutoCommit(false);
 
             for (int i = 0; i < resumenModel.getRowCount(); i++) {
@@ -348,7 +348,7 @@ public class Ventas {
             }
 
         } catch (SQLException e) {
-            try (Connection connection = DriverManager.getConnection(App.url)) {
+            try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena)) {
                 connection.rollback();
             } catch (SQLException rollbackEx) {
                 JOptionPane.showMessageDialog(null, "Error al realizar el rollback: " + rollbackEx.getMessage());
@@ -361,10 +361,10 @@ public class Ventas {
 
         String query = "INSERT INTO libro_diario (fechaVenta, sucursalVenta, clienteVenta, articulosVenta, montoVenta, medioDePagoVenta) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DriverManager.getConnection(App.url);
+        try (Connection connection = DriverManager.getConnection(App.url, App.usuario, App.contrasena);
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setString(1, new SimpleDateFormat("yyyy-MM-dd").format(new Date())); // Fecha actual
+            statement.setString(1, new SimpleDateFormat("dd-MM-yyyy").format(new Date())); // Fecha actual
             statement.setString(2, sucursal);
             statement.setString(3, clienteVenta);
             statement.setString(4, articulosVenta);

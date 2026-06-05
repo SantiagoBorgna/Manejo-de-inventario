@@ -101,10 +101,13 @@ public class InterfazPrincipal {
             // GRUPO 5: TIENDA WEB
             JButton btnPedidosWeb = crearBotonTop("<html><center>Pedidos<br>Web</center></html>");
             JButton btnEnviosWeb = crearBotonTop("<html><center>Envios<br>Web</center></html>");
+            JButton btnTransferencias = crearBotonTop("<html><center>Transferencias<br>pendientes</center></html>");
             topPanel.add(btnPedidosWeb);
             topPanel.add(btnEnviosWeb);
+            topPanel.add(btnTransferencias);
             btnPedidosWeb.addActionListener(e -> new PedidosWebUI(false).abrirInterfaz());
             btnEnviosWeb.addActionListener(e -> new PedidosWebUI(true).abrirInterfaz());
+            btnTransferencias.addActionListener(e -> new TransferenciasUI().abrirInterfaz());
         }
 
         // PANEL CENTRAL

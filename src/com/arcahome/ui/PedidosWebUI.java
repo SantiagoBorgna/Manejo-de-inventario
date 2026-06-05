@@ -41,6 +41,7 @@ public class PedidosWebUI {
         txtSearch.setFont(new Font("Arial", Font.PLAIN, 20));
 
         cbFiltroEstado = new JComboBox<>(new String[]{"Todos", labelPendiente, labelListo});
+        cbFiltroEstado.setSelectedIndex(1); // Por defecto en "No entregados" / "No despachados"
         cbFiltroEstado.setPreferredSize(new Dimension(200, 45));
         cbFiltroEstado.setFont(new Font("Roboto", Font.PLAIN, 18));
         cbFiltroEstado.setBackground(new Color(240, 233, 225));
@@ -91,7 +92,12 @@ public class PedidosWebUI {
                 try {
                     int idPedido = (int) model.getValueAt(row, 0);
                     boolean nuevoEstado = (boolean) model.getValueAt(row, checkIndex);
-                    dao.actualizarDespacho(idPedido, nuevoEstado);
+                    
+                    // Actualizar BD y refrescar asíncronamente para evitar IndexOutOfBoundsException
+                    SwingUtilities.invokeLater(() -> {
+                        dao.actualizarDespacho(idPedido, nuevoEstado);
+                        refrescar(txtSearch.getText().trim());
+                    });
                 } catch (Exception ex) {}
             }
         });
@@ -137,7 +143,7 @@ public class PedidosWebUI {
                         p.getProvincia(),
                         p.getCalle() + " " + p.getNumero() + " " + p.getPisoDepto(),
                         p.getMetodoEnvio(),
-                        "$" + p.getCostoEnvio(), // Asegurate que esto sea String o Double según tu modelo
+                        "$" + p.getCostoEnvio(),
                         p.getResumenArticulos(),
                         p.isDespachado()
                 });
@@ -218,5 +224,11 @@ public class PedidosWebUI {
         // Checkbox
         table.getColumnModel().getColumn(checkIndex).setPreferredWidth(100);
         table.getColumnModel().getColumn(checkIndex).setMaxWidth(100);
+        
+        // Orden por defecto: ID Ascendente (que coincide con Fecha más viejo a más nuevo)
+        java.util.List<RowSorter.SortKey> sortKeys = new java.util.ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
+        sorter.sort();
     }
 }

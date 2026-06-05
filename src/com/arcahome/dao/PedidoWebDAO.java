@@ -116,4 +116,63 @@ public class PedidoWebDAO {
             return false;
         }
     }
+
+    public List<PedidoWeb> listarTransferenciasPendientes(String busqueda) {
+        List<PedidoWeb> lista = new ArrayList<>();
+        String sql = "SELECT * FROM pedidos_web WHERE medio_pago = 'transferencia' AND estado = 'PENDIENTE_TRANSFERENCIA' " +
+                "AND (nombre_cliente LIKE ? OR apellido_cliente LIKE ? OR id LIKE ?) ORDER BY id ASC";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            String searchPattern = "%" + busqueda + "%";
+            ps.setString(1, searchPattern);
+            ps.setString(2, searchPattern);
+            ps.setString(3, searchPattern);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                PedidoWeb p = new PedidoWeb();
+                p.setId(rs.getInt("id"));
+                p.setFecha(rs.getString("fecha_pedido"));
+                p.setNombre(rs.getString("nombre_cliente"));
+                p.setApellido(rs.getString("apellido_cliente"));
+                p.setDni(rs.getString("dni"));
+                p.setTelefono(rs.getString("telefono"));
+                p.setEmail(rs.getString("email"));
+                p.setCalle(rs.getString("calle"));
+                p.setNumero(rs.getString("numero"));
+                p.setPisoDepto(rs.getString("piso_depto"));
+                p.setCiudad(rs.getString("ciudad"));
+                p.setProvincia(rs.getString("provincia"));
+                p.setCp(rs.getString("codigo_postal"));
+                p.setMetodoEnvio(rs.getString("metodo_envio"));
+                p.setCostoEnvio(rs.getString("costo_envio"));
+                p.setMedioPago(rs.getString("medio_pago"));
+
+                try {
+                    String totalStr = rs.getString("total_final");
+
+                    if (totalStr != null) {
+                        totalStr = totalStr.replace("$", "").trim();
+
+                        if (totalStr.contains(",")) {
+                            totalStr = totalStr.replace(".", "");
+                            totalStr = totalStr.replace(",", ".");
+                        }
+
+                        p.setTotalFinal(Double.parseDouble(totalStr));
+                    }
+                } catch (Exception e) { p.setTotalFinal(0.0); }
+
+                p.setResumenArticulos(rs.getString("resumen_articulos"));
+                p.setDespachado(rs.getBoolean("despachado"));
+
+                lista.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 }

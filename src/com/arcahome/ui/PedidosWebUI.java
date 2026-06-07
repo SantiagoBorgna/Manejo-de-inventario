@@ -16,6 +16,8 @@ public class PedidosWebUI {
     private boolean esModoEnvio;
     private JComboBox<String> cbFiltroEstado;
     private TableRowSorter<DefaultTableModel> sorter;
+    private JFrame frame;
+    private JTextField txtSearch;
 
     public PedidosWebUI(boolean esModoEnvio) {
         this.esModoEnvio = esModoEnvio;
@@ -27,7 +29,7 @@ public class PedidosWebUI {
         String labelPendiente = esModoEnvio ? "No despachados" : "No entregados";
         String labelListo = esModoEnvio ? "Despachados" : "Entregados";
 
-        JFrame frame = new JFrame(titulo);
+        frame = new JFrame(titulo);
         frame.setIconImage(App.logo);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setLayout(new BorderLayout());
@@ -36,7 +38,7 @@ public class PedidosWebUI {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
         topPanel.setBackground(new Color(220, 204, 181));
 
-        JTextField txtSearch = new JTextField(15);
+        txtSearch = new JTextField(15);
         txtSearch.setPreferredSize(new Dimension(250, 45));
         txtSearch.setFont(new Font("Arial", Font.PLAIN, 20));
 
@@ -93,9 +95,11 @@ public class PedidosWebUI {
                     int idPedido = (int) model.getValueAt(row, 0);
                     boolean nuevoEstado = (boolean) model.getValueAt(row, checkIndex);
                     
-                    // Actualizar BD y refrescar asíncronamente para evitar IndexOutOfBoundsException
                     SwingUtilities.invokeLater(() -> {
                         dao.actualizarDespacho(idPedido, nuevoEstado);
+                        if (nuevoEstado) {
+                            Toast.mostrar("Pedido marcado como " + labelListo);
+                        }
                         refrescar(txtSearch.getText().trim());
                     });
                 } catch (Exception ex) {}
@@ -104,6 +108,7 @@ public class PedidosWebUI {
 
         // Eventos Filtros
         btnSearch.addActionListener(e -> refrescar(txtSearch.getText().trim()));
+        txtSearch.addActionListener(e -> refrescar(txtSearch.getText().trim()));
         cbFiltroEstado.addActionListener(e -> refrescar(txtSearch.getText().trim()));
 
         refrescar("");
@@ -116,49 +121,73 @@ public class PedidosWebUI {
     }
 
     private void refrescar(String busqueda) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
+        if (frame != null) {
+            frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            table.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        }
 
         String tipoEnvio = esModoEnvio ? "ENVIO" : "RETIRO";
         String seleccion = (String) cbFiltroEstado.getSelectedItem();
-        String filtroEstado = "Todos";
+        String filtroEstadoObj = "Todos";
 
-        if (seleccion.contains("No ")) filtroEstado = "Pendientes";
-        else if (seleccion.equals("Despachados") || seleccion.equals("Entregados")) filtroEstado = "Completados";
+        if (seleccion.contains("No ")) filtroEstadoObj = "Pendientes";
+        else if (seleccion.equals("Despachados") || seleccion.equals("Entregados")) filtroEstadoObj = "Completados";
 
-        List<PedidoWeb> lista = dao.listar(tipoEnvio, busqueda, filtroEstado);
+        final String filtroEstadoFinal = filtroEstadoObj;
 
-        for (PedidoWeb p : lista) {
-            if (esModoEnvio) {
-                // Fila larga para Envíos
-                model.addRow(new Object[]{
-                        p.getId(),
-                        p.getFecha(),
-                        p.getNombreCompleto(),
-                        p.getDni(),
-                        p.getEmail(),
-                        p.getTelefono(),
-                        p.getCp(),
-                        p.getCiudad(),
-                        p.getProvincia(),
-                        p.getCalle() + " " + p.getNumero() + " " + p.getPisoDepto(),
-                        p.getMetodoEnvio(),
-                        "$" + p.getCostoEnvio(),
-                        p.getResumenArticulos(),
-                        p.isDespachado()
-                });
-            } else {
-                // Fila corta para Retiro
-                model.addRow(new Object[]{
-                        p.getId(),
-                        p.getFecha(),
-                        p.getNombreCompleto(),
-                        "$" + p.getTotalFinal(),
-                        p.getResumenArticulos(),
-                        p.isDespachado()
-                });
+        SwingWorker<List<PedidoWeb>, Void> worker = new SwingWorker<List<PedidoWeb>, Void>() {
+            @Override
+            protected List<PedidoWeb> doInBackground() throws Exception {
+                return dao.listar(tipoEnvio, busqueda, filtroEstadoFinal);
             }
-        }
+
+            @Override
+            protected void done() {
+                try {
+                    List<PedidoWeb> lista = get();
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
+                    model.setRowCount(0);
+
+                    for (PedidoWeb p : lista) {
+                        if (esModoEnvio) {
+                            model.addRow(new Object[]{
+                                    p.getId(),
+                                    p.getFecha(),
+                                    p.getNombreCompleto(),
+                                    p.getDni(),
+                                    p.getEmail(),
+                                    p.getTelefono(),
+                                    p.getCp(),
+                                    p.getCiudad(),
+                                    p.getProvincia(),
+                                    p.getCalle() + " " + p.getNumero() + " " + p.getPisoDepto(),
+                                    p.getMetodoEnvio(),
+                                    "$" + p.getCostoEnvio(),
+                                    p.getResumenArticulos(),
+                                    p.isDespachado()
+                            });
+                        } else {
+                            model.addRow(new Object[]{
+                                    p.getId(),
+                                    p.getFecha(),
+                                    p.getNombreCompleto(),
+                                    "$" + p.getTotalFinal(),
+                                    p.getResumenArticulos(),
+                                    p.isDespachado()
+                            });
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                } finally {
+                    if (frame != null) {
+                        frame.setCursor(Cursor.getDefaultCursor());
+                        table.setCursor(Cursor.getDefaultCursor());
+                    }
+                }
+            }
+        };
+        worker.execute();
     }
 
     private void configurarTabla(int checkIndex) {

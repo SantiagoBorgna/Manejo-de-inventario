@@ -56,6 +56,7 @@ public class CuentasCorrientesUI {
 
         // LISTENERS
         btnSearch.addActionListener(e -> refrescar(txtSearch.getText().trim()));
+        txtSearch.addActionListener(e -> btnSearch.doClick());
 
         refrescar(""); // Carga inicial
 

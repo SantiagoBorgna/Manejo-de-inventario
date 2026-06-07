@@ -1,1 +1,1 @@
-javac -cp ".;lib/*" @sources.txt
+javac -d out -cp ".;lib/*" src\com\arcahome\dao\*.java src\com\arcahome\db\*.java src\com\arcahome\logic\*.java src\com\arcahome\main\*.java src\com\arcahome\model\*.java src\com\arcahome\ui\*.java src\com\arcahome\util\*.java

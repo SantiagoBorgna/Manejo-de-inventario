@@ -90,6 +90,7 @@ public class Inicio {
             }
         });
 
+        loginFrame.getRootPane().setDefaultButton(btnLogin);
         loginFrame.setVisible(true);
     }
 

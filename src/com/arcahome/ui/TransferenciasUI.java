@@ -14,12 +14,14 @@ public class TransferenciasUI {
     private final PedidoWebDAO dao = new PedidoWebDAO();
     private JTable table;
     private TableRowSorter<DefaultTableModel> sorter;
+    private JFrame frame;
+    private JTextField txtSearch;
 
     public TransferenciasUI() {
     }
 
     public void abrirInterfaz() {
-        JFrame frame = new JFrame("Transferencias Pendientes");
+        frame = new JFrame("Transferencias Pendientes");
         frame.setIconImage(App.logo);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setLayout(new BorderLayout());
@@ -28,7 +30,7 @@ public class TransferenciasUI {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
         topPanel.setBackground(new Color(220, 204, 181));
 
-        JTextField txtSearch = new JTextField(15);
+        txtSearch = new JTextField(15);
         txtSearch.setPreferredSize(new Dimension(250, 45));
         txtSearch.setFont(new Font("Arial", Font.PLAIN, 20));
 
@@ -84,7 +86,7 @@ public class TransferenciasUI {
                             if (confirm == JOptionPane.YES_OPTION) {
                                 boolean success = dao.cambiarEstado(idPedido, "PAGADO");
                                 if (success) {
-                                    JOptionPane.showMessageDialog(frame, "Pedido marcado como PAGADO.");
+                                    Toast.mostrar("Pedido marcado como PAGADO");
                                     refrescar(txtSearch.getText().trim());
                                 } else {
                                     JOptionPane.showMessageDialog(frame, "Error al actualizar estado.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -101,6 +103,7 @@ public class TransferenciasUI {
 
         // Eventos Filtros
         btnSearch.addActionListener(e -> refrescar(txtSearch.getText().trim()));
+        txtSearch.addActionListener(e -> refrescar(txtSearch.getText().trim()));
 
         refrescar("");
 
@@ -111,24 +114,48 @@ public class TransferenciasUI {
     }
 
     private void refrescar(String busqueda) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
-
-        List<PedidoWeb> lista = dao.listarTransferenciasPendientes(busqueda);
-
-        for (PedidoWeb p : lista) {
-            model.addRow(new Object[]{
-                    p.getId(),
-                    p.getFecha(),
-                    p.getNombreCompleto(),
-                    p.getDni(),
-                    p.getEmail(),
-                    p.getTelefono(),
-                    "$" + p.getTotalFinal(),
-                    p.getResumenArticulos(),
-                    false // Checkbox arranca en false
-            });
+        if (frame != null) {
+            frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            table.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         }
+
+        SwingWorker<List<PedidoWeb>, Void> worker = new SwingWorker<List<PedidoWeb>, Void>() {
+            @Override
+            protected List<PedidoWeb> doInBackground() throws Exception {
+                return dao.listarTransferenciasPendientes(busqueda);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    List<PedidoWeb> lista = get();
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
+                    model.setRowCount(0);
+
+                    for (PedidoWeb p : lista) {
+                        model.addRow(new Object[]{
+                                p.getId(),
+                                p.getFecha(),
+                                p.getNombreCompleto(),
+                                p.getDni(),
+                                p.getEmail(),
+                                p.getTelefono(),
+                                "$" + p.getTotalFinal(),
+                                p.getResumenArticulos(),
+                                false
+                        });
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                } finally {
+                    if (frame != null) {
+                        frame.setCursor(Cursor.getDefaultCursor());
+                        table.setCursor(Cursor.getDefaultCursor());
+                    }
+                }
+            }
+        };
+        worker.execute();
     }
 
     private void configurarTabla(int checkIndex) {

@@ -59,6 +59,7 @@ public class NotasCreditoUI {
         // LISTENERS
         btnNueva.addActionListener(e -> abrirFormularioNueva());
         btnSearch.addActionListener(e -> refrescarTabla(txtSearch.getText().trim()));
+        txtSearch.addActionListener(e -> btnSearch.doClick());
 
         refrescarTabla(""); // Carga inicial
 

@@ -124,6 +124,7 @@ public class VentasUI {
 
         // EVENTOS
         btnSearch.addActionListener(e -> buscarArticulos(artModel, txtSearch.getText().trim()));
+        txtSearch.addActionListener(e -> btnSearch.doClick());
 
         btnAdd.addActionListener(e -> {
             int row = artTable.getSelectedRow();

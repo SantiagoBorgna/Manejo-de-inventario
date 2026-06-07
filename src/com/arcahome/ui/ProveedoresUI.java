@@ -61,6 +61,7 @@ public class ProveedoresUI {
             refrescarTabla(txtSearch.getText().trim());
             txtSearch.setText("");
         });
+        txtSearch.addActionListener(e -> btnSearch.doClick());
 
         refrescarTabla("");
 

@@ -138,6 +138,7 @@ public class InterfazPrincipal {
             articulosUI.filtrarArticulos(txtSearch.getText().trim());
             txtSearch.setText("");
         });
+        txtSearch.addActionListener(e -> btnSearch.doClick());
         btnNewItem.addActionListener(e -> articulosUI.abrirFormularioArticulo(null));
         btnReposition.addActionListener(e -> articulosUI.abrirReposicion(obtenerIdSeleccionado(), obtenerNombreSeleccionado()));
         btnUpdate.addActionListener(e -> {
@@ -162,6 +163,18 @@ public class InterfazPrincipal {
         App.listTable.getSelectionModel().addListSelectionListener(event -> {
             if (!event.getValueIsAdjusting() && App.listTable.getSelectedRow() != -1) {
                 articulosUI.mostrarDetalleArticulo();
+            }
+        });
+
+        App.listTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent event) {
+                if (event.getClickCount() == 2 && App.listTable.getSelectedRow() != -1) {
+                    Articulo art = obtenerArticuloSeleccionado();
+                    if (art != null) {
+                        articulosUI.abrirFormularioArticulo(art);
+                    }
+                }
             }
         });
 

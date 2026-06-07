@@ -16,6 +16,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class ArticulosUI {
 
@@ -98,6 +100,23 @@ public class ArticulosUI {
         Font fuenteLabel = new Font("Roboto", Font.PLAIN, 30);
         Font fuenteInput = new Font("Arial", Font.PLAIN, 18);
 
+        // Helper para validación visual
+        java.util.function.Consumer<JTextField> addNumValidation = (tf) -> {
+            tf.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) { validar(); }
+                public void removeUpdate(DocumentEvent e) { validar(); }
+                public void insertUpdate(DocumentEvent e) { validar(); }
+                private void validar() {
+                    try {
+                        if (!tf.getText().isEmpty()) Double.parseDouble(tf.getText());
+                        tf.setBorder(UIManager.getBorder("TextField.border"));
+                    } catch (NumberFormatException ex) {
+                        tf.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                    }
+                }
+            });
+        };
+
         // Componentes base
         JLabel lblNombre = new JLabel("Nombre:");
         lblNombre.setFont(fuenteLabel);
@@ -119,18 +138,22 @@ public class ArticulosUI {
 
         JTextField txtPeso = new JTextField(esEdicion ? String.valueOf(articuloExistente.getPeso()) : "0");
         txtPeso.setPreferredSize(new Dimension(50, 40));
+        addNumValidation.accept(txtPeso);
         JLabel labelPeso = new JLabel("Peso (kg)");
         labelPeso.setFont(new Font("Roboto", Font.PLAIN, 12));
         JTextField txtAlto = new JTextField(esEdicion ? String.valueOf(articuloExistente.getAlto()) : "0");
         txtAlto.setPreferredSize(new Dimension(50, 40));
+        addNumValidation.accept(txtAlto);
         JLabel labelAlto = new JLabel("Altura (cm)");
         labelAlto.setFont(new Font("Roboto", Font.PLAIN, 12));
         JTextField txtAncho = new JTextField(esEdicion ? String.valueOf(articuloExistente.getAncho()) : "0");
         txtAncho.setPreferredSize(new Dimension(50, 40));
+        addNumValidation.accept(txtAncho);
         JLabel labelAncho = new JLabel("Ancho (cm)");
         labelAncho.setFont(new Font("Roboto", Font.PLAIN, 12));
         JTextField txtProf = new JTextField(esEdicion ? String.valueOf(articuloExistente.getProfundidad()) : "0");
         txtProf.setPreferredSize(new Dimension(50, 40));
+        addNumValidation.accept(txtProf);
         JLabel labelProf = new JLabel("Profundidad (cm)");
         labelProf.setFont(new Font("Roboto", Font.PLAIN, 12));
 
@@ -143,6 +166,7 @@ public class ArticulosUI {
         JTextField txtCant = new JTextField(String.valueOf(stockVal));
         txtCant.setPreferredSize(new Dimension(250, 40));
         txtCant.setFont(fuenteInput);
+        addNumValidation.accept(txtCant);
         panel.add(lblCant); panel.add(txtCant);
 
         JLabel lblCat = new JLabel("Categoria:");
@@ -158,6 +182,7 @@ public class ArticulosUI {
         JTextField txtPVenta = new JTextField(esEdicion ? String.valueOf(articuloExistente.getPrecioVenta()) : "0");
         txtPVenta.setPreferredSize(new Dimension(250, 40));
         txtPVenta.setFont(fuenteInput);
+        addNumValidation.accept(txtPVenta);
         panel.add(lblPVenta); panel.add(txtPVenta);
 
         // Campos condicionales
@@ -168,6 +193,7 @@ public class ArticulosUI {
             txtPCompra.setText(esEdicion ? String.valueOf(articuloExistente.getPrecioCompra()) : "0");
             txtPCompra.setPreferredSize(new Dimension(250, 40));
             txtPCompra.setFont(fuenteInput);
+            addNumValidation.accept(txtPCompra);
             panel.add(lblPCompra); panel.add(txtPCompra);
         }
 
@@ -329,8 +355,9 @@ public class ArticulosUI {
 
                 if (esEdicion) articuloDAO.actualizar(art); else articuloDAO.insertar(art);
                 formulario.dispose();
+                Toast.mostrar(esEdicion ? "Artículo actualizado correctamente" : "Artículo guardado correctamente");
                 refrescarTabla(InterfazPrincipal.sucursalActual);
-            } catch (Exception ex) { JOptionPane.showMessageDialog(formulario, "Error en datos"); }
+            } catch (Exception ex) { JOptionPane.showMessageDialog(formulario, "Error en datos. Revisa los campos resaltados en rojo."); }
         });
 
         rutasImg.clear();
@@ -438,7 +465,7 @@ public class ArticulosUI {
                 boolean exito = articuloDAO.actualizarStock(idSeleccionado, cantidad, InterfazPrincipal.sucursalActual);
 
                 if (exito) {
-                    JOptionPane.showMessageDialog(reposicionFrame, "Stock actualizado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    Toast.mostrar("Stock actualizado correctamente.");
                     reposicionFrame.dispose();
                     refrescarTabla(InterfazPrincipal.sucursalActual);
                 } else {

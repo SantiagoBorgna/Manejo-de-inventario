@@ -309,8 +309,8 @@ public class ArticulosUI {
         }
 
         // Botón Guardar
-        layout.putConstraint(SpringLayout.NORTH, btnGuardar, 20, SpringLayout.SOUTH, ultimoRef);
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnGuardar, 0, SpringLayout.HORIZONTAL_CENTER, panel);
+        layout.putConstraint(SpringLayout.NORTH, btnGuardar, 40, SpringLayout.SOUTH, ultimoRef);
+        layout.putConstraint(SpringLayout.WEST, btnGuardar, inputX, SpringLayout.WEST, panel);
 
         // Panel de Imágenes (A la derecha)
         layout.putConstraint(SpringLayout.WEST, btnImg, 80, SpringLayout.EAST, txtNombre);

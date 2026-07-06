@@ -31,25 +31,32 @@ public class InterfazPrincipal {
         frame.setLayout(new BorderLayout());
 
         // PANEL SUPERIOR
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 10));
-        topPanel.setBackground(new Color(220, 204, 181));
+        JPanel topPanelContainer = new JPanel();
+        topPanelContainer.setLayout(new BoxLayout(topPanelContainer, BoxLayout.Y_AXIS));
+        topPanelContainer.setBackground(new Color(220, 204, 181));
 
-        topPanel.setBorder(BorderFactory.createCompoundBorder(
+        topPanelContainer.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 3, 0, new Color(180, 140, 90)), // Borde inferior
                 BorderFactory.createEmptyBorder(5, 5, 5, 5) // Padding interno
         ));
+
+        JPanel topRow1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 5));
+        topRow1.setBackground(new Color(220, 204, 181));
+
+        JPanel topRow2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 5));
+        topRow2.setBackground(new Color(220, 204, 181));
 
         // GRUPO 1: GESTIÓN DE ARTÍCULOS
         JButton btnReposition = crearBotonTop("Reponer");
         JButton btnNewItem = crearBotonTop("<html><center>Nuevo<br>artículo</center></html>");
         JButton btnUpdate = crearBotonTop("<html><center>Actualizar<br>artículo</center></html>");
 
-        topPanel.add(btnReposition);
-        topPanel.add(btnNewItem);
-        topPanel.add(btnUpdate);
+        topRow1.add(btnReposition);
+        topRow1.add(btnNewItem);
+        topRow1.add(btnUpdate);
 
         // Separador visual
-        topPanel.add(crearSeparador());
+        topRow1.add(crearSeparador());
 
         // GRUPO 2: SUCURSAL
         JComboBox<String> cbSucursal = new JComboBox<>(new String[]{"Oncativo", "Oliva"});
@@ -58,8 +65,8 @@ public class InterfazPrincipal {
             cbSucursal.setFont(new Font("Roboto", Font.PLAIN, 15));
             cbSucursal.setBackground(new Color(240, 233, 225));
             cbSucursal.setPreferredSize(new Dimension(90, 50));
-            topPanel.add(cbSucursal);
-            topPanel.add(crearSeparador());
+            topRow1.add(cbSucursal);
+            topRow1.add(crearSeparador());
         }
 
         // GRUPO 3: BÚSQUEDA
@@ -69,11 +76,11 @@ public class InterfazPrincipal {
 
         JButton btnSearch = crearBotonTop("Buscar");
 
-        topPanel.add(txtSearch);
-        topPanel.add(btnSearch);
+        topRow1.add(txtSearch);
+        topRow1.add(btnSearch);
 
         // Separador visual
-        topPanel.add(crearSeparador());
+        topRow1.add(crearSeparador());
 
         // GRUPO 4: OPERACIONES
         JButton btnSale = crearBotonTop("Venta");
@@ -82,33 +89,36 @@ public class InterfazPrincipal {
         JButton btnCuentasCorrientes = crearBotonTop("<html><center>Cuentas<br>Corrientes</center></html>");
         JButton btnNotasCredito = crearBotonTop("<html><center>Notas de<br>Crédito</center></html>");
 
-        topPanel.add(btnSale);
-        topPanel.add(btnLibroDiario);
+        topRow2.add(btnSale);
+        topRow2.add(btnLibroDiario);
 
         if (rol.equals("superadmin")) {
             JButton btnProveedores = crearBotonTop("Proveedores");
-            topPanel.add(btnProveedores);
+            topRow2.add(btnProveedores);
             btnProveedores.addActionListener(e -> proveedoresUI.abrirInterfaz());
         }
 
-        topPanel.add(btnCuentasCorrientes);
-        topPanel.add(btnNotasCredito);
+        topRow2.add(btnCuentasCorrientes);
+        topRow2.add(btnNotasCredito);
 
         if (rol.equals("superadmin") || rol.equals("empleado1")){
             // Separador visual
-            topPanel.add(crearSeparador());
+            topRow2.add(crearSeparador());
 
             // GRUPO 5: TIENDA WEB
             JButton btnPedidosWeb = crearBotonTop("<html><center>Pedidos<br>Web</center></html>");
             JButton btnEnviosWeb = crearBotonTop("<html><center>Envios<br>Web</center></html>");
             JButton btnTransferencias = crearBotonTop("<html><center>Transferencias<br>pendientes</center></html>");
-            topPanel.add(btnPedidosWeb);
-            topPanel.add(btnEnviosWeb);
-            topPanel.add(btnTransferencias);
+            topRow2.add(btnPedidosWeb);
+            topRow2.add(btnEnviosWeb);
+            topRow2.add(btnTransferencias);
             btnPedidosWeb.addActionListener(e -> new PedidosWebUI(false).abrirInterfaz());
             btnEnviosWeb.addActionListener(e -> new PedidosWebUI(true).abrirInterfaz());
             btnTransferencias.addActionListener(e -> new TransferenciasUI().abrirInterfaz());
         }
+
+        topPanelContainer.add(topRow1);
+        topPanelContainer.add(topRow2);
 
         // PANEL CENTRAL
         JPanel centerPanel = new JPanel(new BorderLayout());
@@ -178,7 +188,7 @@ public class InterfazPrincipal {
             }
         });
 
-        frame.add(topPanel, BorderLayout.NORTH);
+        frame.add(topPanelContainer, BorderLayout.NORTH);
         frame.add(centerPanel, BorderLayout.CENTER);
         frame.setVisible(true);
     }

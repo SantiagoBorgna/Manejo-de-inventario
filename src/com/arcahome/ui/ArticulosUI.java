@@ -242,13 +242,13 @@ public class ArticulosUI {
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, lblNombre, 0, SpringLayout.VERTICAL_CENTER, txtNombre);
 
         // Descripcion
-        layout.putConstraint(SpringLayout.NORTH, txtDesc, 30, SpringLayout.SOUTH, txtNombre);
+        layout.putConstraint(SpringLayout.NORTH, txtDesc, 20, SpringLayout.SOUTH, txtNombre);
         layout.putConstraint(SpringLayout.WEST, txtDesc, inputX, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, lblDesc, -20, SpringLayout.WEST, txtDesc);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, lblDesc, 0, SpringLayout.VERTICAL_CENTER, txtDesc);
 
         // Dimensiones (Fila de 4 inputs)
-        layout.putConstraint(SpringLayout.NORTH, txtPeso, 40, SpringLayout.SOUTH, txtDesc);
+        layout.putConstraint(SpringLayout.NORTH, txtPeso, 20, SpringLayout.SOUTH, txtDesc);
         layout.putConstraint(SpringLayout.WEST, txtPeso, inputX, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.NORTH, labelPeso, -20, SpringLayout.NORTH, txtPeso);
         layout.putConstraint(SpringLayout.WEST, labelPeso, 0, SpringLayout.WEST, txtPeso);
@@ -271,13 +271,13 @@ public class ArticulosUI {
         layout.putConstraint(SpringLayout.WEST, labelProf, 0, SpringLayout.WEST, txtProf);
 
         // Cantidad
-        layout.putConstraint(SpringLayout.NORTH, txtCant, 30, SpringLayout.SOUTH, txtPeso);
+        layout.putConstraint(SpringLayout.NORTH, txtCant, 20, SpringLayout.SOUTH, txtPeso);
         layout.putConstraint(SpringLayout.WEST, txtCant, inputX, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, lblCant, -20, SpringLayout.WEST, txtCant);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, lblCant, 0, SpringLayout.VERTICAL_CENTER, txtCant);
 
         // Categoria
-        layout.putConstraint(SpringLayout.NORTH, cbCat, 30, SpringLayout.SOUTH, txtCant);
+        layout.putConstraint(SpringLayout.NORTH, cbCat, 20, SpringLayout.SOUTH, txtCant);
         layout.putConstraint(SpringLayout.WEST, cbCat, inputX, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, lblCat, -20, SpringLayout.WEST, cbCat);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, lblCat, 0, SpringLayout.VERTICAL_CENTER, cbCat);
@@ -285,14 +285,14 @@ public class ArticulosUI {
         // Precios
         Component ultimoRef = lblCat;
         if (Inicio.rol.contains("admin")) {
-            layout.putConstraint(SpringLayout.NORTH, txtPCompra, 30, SpringLayout.SOUTH, ultimoRef);
+            layout.putConstraint(SpringLayout.NORTH, txtPCompra, 20, SpringLayout.SOUTH, ultimoRef);
             layout.putConstraint(SpringLayout.WEST, txtPCompra, inputX, SpringLayout.WEST, panel);
             layout.putConstraint(SpringLayout.EAST, lblPCompra, -20, SpringLayout.WEST, txtPCompra);
             layout.putConstraint(SpringLayout.VERTICAL_CENTER, lblPCompra, 0, SpringLayout.VERTICAL_CENTER, txtPCompra);
             ultimoRef = txtPCompra;
         }
 
-        layout.putConstraint(SpringLayout.NORTH, txtPVenta, 30, SpringLayout.SOUTH, ultimoRef);
+        layout.putConstraint(SpringLayout.NORTH, txtPVenta, 20, SpringLayout.SOUTH, ultimoRef);
         layout.putConstraint(SpringLayout.WEST, txtPVenta, inputX, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, lblPVenta, -20, SpringLayout.WEST, txtPVenta);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, lblPVenta, 0, SpringLayout.VERTICAL_CENTER, txtPVenta);
@@ -300,7 +300,7 @@ public class ArticulosUI {
         // Proveedor
         ultimoRef = txtPVenta;
         if (Inicio.rol.contains("admin")) {
-            layout.putConstraint(SpringLayout.NORTH, txtProveedor, 30, SpringLayout.SOUTH, ultimoRef);
+            layout.putConstraint(SpringLayout.NORTH, txtProveedor, 20, SpringLayout.SOUTH, ultimoRef);
             layout.putConstraint(SpringLayout.WEST, txtProveedor, inputX, SpringLayout.WEST, panel);
             layout.putConstraint(SpringLayout.EAST, lblProv, -20, SpringLayout.WEST, txtProveedor);
             layout.putConstraint(SpringLayout.VERTICAL_CENTER, lblProv, 0, SpringLayout.VERTICAL_CENTER, txtProveedor);
@@ -309,7 +309,7 @@ public class ArticulosUI {
         }
 
         // Botón Guardar
-        layout.putConstraint(SpringLayout.NORTH, btnGuardar, 40, SpringLayout.SOUTH, ultimoRef);
+        layout.putConstraint(SpringLayout.NORTH, btnGuardar, 25, SpringLayout.SOUTH, ultimoRef);
         layout.putConstraint(SpringLayout.WEST, btnGuardar, inputX, SpringLayout.WEST, panel);
 
         // Panel de Imágenes (A la derecha)

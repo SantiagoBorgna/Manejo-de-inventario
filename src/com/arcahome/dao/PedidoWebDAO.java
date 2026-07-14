@@ -77,11 +77,7 @@ public class PedidoWebDAO {
                     }
                 } catch (Exception e) { p.setTotalFinal(0.0); }
 
-                String resumen = rs.getString("resumen_articulos");
-                if (resumen != null) {
-                    resumen = resumen.replaceAll("\\(\\d+\\)\\s*", "");
-                }
-                p.setResumenArticulos(resumen);
+                p.setResumenArticulos(rs.getString("resumen_articulos"));
 
                 p.setCalle(rs.getString("calle"));
                 p.setNumero(rs.getString("numero"));
@@ -171,11 +167,7 @@ public class PedidoWebDAO {
                     }
                 } catch (Exception e) { p.setTotalFinal(0.0); }
 
-                String resumen = rs.getString("resumen_articulos");
-                if (resumen != null) {
-                    resumen = resumen.replaceAll("\\(\\d+\\)\\s*", "");
-                }
-                p.setResumenArticulos(resumen);
+                p.setResumenArticulos(rs.getString("resumen_articulos"));
                 p.setDespachado(rs.getBoolean("despachado"));
 
                 lista.add(p);

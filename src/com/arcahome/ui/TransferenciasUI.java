@@ -187,6 +187,19 @@ public class TransferenciasUI {
             } catch (Exception e) { return s1.compareToIgnoreCase(s2); }
         };
 
+        Comparator<Object> comparadorFecha = (o1, o2) -> {
+            String s1 = (o1 == null) ? "" : o1.toString();
+            String s2 = (o2 == null) ? "" : o2.toString();
+            try {
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
+                java.util.Date d1 = sdf.parse(s1);
+                java.util.Date d2 = sdf.parse(s2);
+                return d1.compareTo(d2);
+            } catch (Exception e) {
+                return s1.compareToIgnoreCase(s2);
+            }
+        };
+
         // Auto resize
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
@@ -198,7 +211,8 @@ public class TransferenciasUI {
         table.getColumnModel().getColumn(6).setPreferredWidth(120); // Total
         table.getColumnModel().getColumn(7).setPreferredWidth(500); // Detalle Compra
 
-        // Aplicar comparador a Total
+        // Aplicar comparadores
+        sorter.setComparator(1, comparadorFecha);
         sorter.setComparator(6, comparadorNumerico);
 
         // Checkbox

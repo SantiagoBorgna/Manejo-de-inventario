@@ -219,6 +219,19 @@ public class PedidosWebUI {
             } catch (Exception e) { return s1.compareToIgnoreCase(s2); }
         };
 
+        Comparator<Object> comparadorFecha = (o1, o2) -> {
+            String s1 = (o1 == null) ? "" : o1.toString();
+            String s2 = (o2 == null) ? "" : o2.toString();
+            try {
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
+                java.util.Date d1 = sdf.parse(s1);
+                java.util.Date d2 = sdf.parse(s2);
+                return d1.compareTo(d2);
+            } catch (Exception e) {
+                return s1.compareToIgnoreCase(s2);
+            }
+        };
+
         // Aplicar anchos y comparadores según modo
         if (esModoEnvio) {
             // Desactivar auto-resize para que aparezca scroll horizontal
@@ -234,7 +247,8 @@ public class PedidosWebUI {
             table.getColumnModel().getColumn(10).setPreferredWidth(120); // Envio
             table.getColumnModel().getColumn(12).setPreferredWidth(500); // Detalle
 
-            // Aplicar comparador a Costo
+            // Aplicar comparadores
+            sorter.setComparator(1, comparadorFecha);
             sorter.setComparator(11, comparadorNumerico);
 
         } else {
@@ -246,7 +260,8 @@ public class PedidosWebUI {
             table.getColumnModel().getColumn(3).setPreferredWidth(120); // Total
             table.getColumnModel().getColumn(4).setPreferredWidth(500); // Detalle
 
-            // Aplicar comparador a Total
+            // Aplicar comparadores
+            sorter.setComparator(1, comparadorFecha);
             sorter.setComparator(3, comparadorNumerico);
         }
 

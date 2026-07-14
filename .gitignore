@@ -36,4 +36,4 @@ bin/
 
 config.properties
 
-!lib/*.jar
+!lib/*.jarconfig.properties 

@@ -43,7 +43,7 @@ public class TransferenciasUI {
         topPanel.add(btnSearch);
 
         // --- DEFINICIÓN DE COLUMNAS ---
-        String[] cols = new String[]{"ID", "Fecha", "Cliente", "DNI", "Email", "Teléfono", "Total", "Detalle Compra", "Recibido"};
+        String[] cols = new String[]{"ID", "Fecha", "Cliente", "DNI", "Email", "Teléfono", "Total", "Detalle Compra", "Metodo Envio", "Recibido"};
 
         int checkIndex = cols.length - 1;
 
@@ -87,6 +87,34 @@ public class TransferenciasUI {
                                 boolean success = dao.cambiarEstado(idPedido, "PAGADO");
                                 if (success) {
                                     Toast.mostrar("Pedido marcado como PAGADO");
+                                    
+                                    String emailCliente = (String) model.getValueAt(row, 4);
+                                    String nombreCliente = (String) model.getValueAt(row, 2);
+                                    String totalStr = (String) model.getValueAt(row, 6);
+                                    String resumenArticulos = (String) model.getValueAt(row, 7);
+                                    String metodoEnvio = (String) model.getValueAt(row, 8);
+                                    
+                                    // Limpiar el String del total para convertir a double
+                                    totalStr = totalStr.replace("$", "").trim();
+                                    if (totalStr.contains(",")) { totalStr = totalStr.replace(".", "").replace(",", "."); }
+                                    double totalDouble = 0;
+                                    try { totalDouble = Double.parseDouble(totalStr); } catch (Exception ignored) {}
+
+                                    String finalNombreCliente = nombreCliente.split(" ")[0]; // Solo el primer nombre
+                                    double finalTotalDouble = totalDouble;
+
+                                    // Enviar correo asincrónicamente
+                                    new Thread(() -> {
+                                        boolean emailSuccess = com.arcahome.util.EmailService.enviarCorreoConfirmacion(
+                                                emailCliente, finalNombreCliente, idPedido, resumenArticulos, finalTotalDouble, metodoEnvio
+                                        );
+                                        if (emailSuccess) {
+                                            System.out.println("Correo enviado exitosamente a " + emailCliente);
+                                        } else {
+                                            System.err.println("Fallo al enviar correo a " + emailCliente);
+                                        }
+                                    }).start();
+
                                     refrescar(txtSearch.getText().trim());
                                 } else {
                                     JOptionPane.showMessageDialog(frame, "Error al actualizar estado.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -142,6 +170,7 @@ public class TransferenciasUI {
                                 p.getTelefono(),
                                 "$" + p.getTotalFinal(),
                                 p.getResumenArticulos(),
+                                p.getMetodoEnvio(),
                                 false
                         });
                     }
@@ -171,6 +200,11 @@ public class TransferenciasUI {
         table.getColumnModel().getColumn(0).setMinWidth(0);
         table.getColumnModel().getColumn(0).setMaxWidth(0);
         table.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        // Ocultar Metodo Envio
+        table.getColumnModel().getColumn(8).setMinWidth(0);
+        table.getColumnModel().getColumn(8).setMaxWidth(0);
+        table.getColumnModel().getColumn(8).setPreferredWidth(0);
 
         sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
         table.setRowSorter(sorter);

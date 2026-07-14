@@ -26,6 +26,8 @@ public class PedidoWebDAO {
         } else if (filtroEstado.equals("Pendientes")) {
             whereClause += " AND despachado = 0";
         }
+        
+        whereClause += " AND (estado IS NULL OR estado != 'PENDIENTE_TRANSFERENCIA')";
 
         // 3. Consulta final con ORDEN ASCENDENTE
         sql = "SELECT * FROM pedidos_web WHERE " + whereClause +
@@ -75,7 +77,11 @@ public class PedidoWebDAO {
                     }
                 } catch (Exception e) { p.setTotalFinal(0.0); }
 
-                p.setResumenArticulos(rs.getString("resumen_articulos"));
+                String resumen = rs.getString("resumen_articulos");
+                if (resumen != null) {
+                    resumen = resumen.replaceAll("\\(\\d+\\)\\s*", "");
+                }
+                p.setResumenArticulos(resumen);
 
                 p.setCalle(rs.getString("calle"));
                 p.setNumero(rs.getString("numero"));
@@ -165,7 +171,11 @@ public class PedidoWebDAO {
                     }
                 } catch (Exception e) { p.setTotalFinal(0.0); }
 
-                p.setResumenArticulos(rs.getString("resumen_articulos"));
+                String resumen = rs.getString("resumen_articulos");
+                if (resumen != null) {
+                    resumen = resumen.replaceAll("\\(\\d+\\)\\s*", "");
+                }
+                p.setResumenArticulos(resumen);
                 p.setDespachado(rs.getBoolean("despachado"));
 
                 lista.add(p);
